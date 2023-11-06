@@ -9,7 +9,9 @@ public interface IProductService {
 
     String deleteProduct(Long product);
 
-    String getsSingleProduct(Long product);
+    String getSingleProduct(Long product);
+
+
 
     String getAllProducts();
 }
