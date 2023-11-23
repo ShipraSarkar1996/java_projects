@@ -4,6 +4,8 @@ import com.example.productservice_proxy.dtos.ProductDto;
 import com.example.productservice_proxy.models.Product;
 import com.example.productservice_proxy.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,9 +23,17 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    private Product getSingleProduct(@PathVariable("id") Long productId){
+    private ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long productId){
+        try{
         Product product = this.productService.getSingleProduct(productId);
-        return  product;
+        if (productId <1){
+        throw new IllegalArgumentException("Invalid product id");}
+        ResponseEntity responseEntity = new ResponseEntity<>(product, HttpStatus.OK);
+        return  responseEntity;
+    }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping()
