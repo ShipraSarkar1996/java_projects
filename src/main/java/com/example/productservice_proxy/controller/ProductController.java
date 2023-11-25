@@ -6,8 +6,10 @@ import com.example.productservice_proxy.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -17,24 +19,29 @@ public class ProductController {
 //    public ProductController(IProductService productService){
 //        this.productService = productService;
 //    }
-    @GetMapping("/products")
-    public String getAllProduct(){
-        return "Get all products";
+    @GetMapping("")
+    public List<Product> getAllProduct(){
+        return this.productService.getAllProducts();
+
     }
 
-    @GetMapping("/{id}")
-    private ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long productId){
-        try{
-        Product product = this.productService.getSingleProduct(productId);
-        if (productId <1){
-        throw new IllegalArgumentException("Invalid product id");}
-        ResponseEntity responseEntity = new ResponseEntity<>(product, HttpStatus.OK);
-        return  responseEntity;
-    }
-        catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/{id}")
+//    private ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long productId){
+//        try{
+//            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+//            headers.add("Content-Type", "application/json");
+//            headers.add("Accept", "application/json");
+//            headers.add("auth-token", "keyaccess");
+//        Product product = this.productService.getSingleProduct(productId);
+//        if (productId <1){
+//        throw new IllegalArgumentException("Invalid product id");}
+//        ResponseEntity responseEntity = new ResponseEntity<>(product,headers, HttpStatus.OK);
+//        return  responseEntity;
+//    }
+//        catch (Exception e){
+//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PostMapping()
     public String addNewProduct(@RequestBody ProductDto productDto){

@@ -2,6 +2,7 @@ package com.example.productservice_proxy.services;
 
 import com.example.productservice_proxy.dtos.ProductDto;
 import com.example.productservice_proxy.models.Product;
+import java.util.List;
 
 public interface IProductService {
     String addNewProduct(ProductDto product);
@@ -10,9 +11,10 @@ public interface IProductService {
 
     String deleteProduct(Long product);
 
-    Product getSingleProduct(Long product);
+//    Product getSingleProduct(Long product);
 
 
 
-    String getAllProducts();
+
+    List<Product> getAllProducts();
 }
