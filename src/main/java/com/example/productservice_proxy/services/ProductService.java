@@ -24,8 +24,12 @@ public class ProductService implements IProductService {
         this.restTemplate = restTemplate;
     }
     @Override
-    public String addNewProduct(ProductDto product) {
-        return "Product added successfully";
+    public Product addNewProduct(ProductDto product) {
+
+        RestTemplate rest = restTemplate.build();
+        rest.postForEntity("https://fakestoreapi.com/products",product,ProductDto.class);
+        Product pro = getProduct(product);
+        return pro;
     }
     @Override
     public String updateProduct(Long product) {
@@ -35,21 +39,15 @@ public class ProductService implements IProductService {
     public String deleteProduct(Long product) {
         return "Product deleted successfully";
     }
-//    @Override
-//    public Product getSingleProduct(Long productId) {
-//        RestTemplate rest = restTemplate.build();
-//        ProductDto productDto = rest.getForEntity("https://fakestoreapi.com/products/{id}", ProductDto.class,productId).getBody();
-//        Product product = new Product();
-//        product.setId(productDto.getId());
-//        product.setTitle((String) productDto.getTitle());
-//        product.setPrice((Double) productDto.getPrice());
-//        Categories category = new Categories();
-//        product.setCategory(category);
-//        product.setImage( productDto.getImage());
-//        product.setDescription(productDto.getDescription());
-//
-//        return product;
-//    }
+    @Override
+    public Product getSingleProduct(Long productId) {
+        RestTemplate rest = restTemplate.build();
+        ProductDto productDto = rest.getForEntity("https://fakestoreapi.com/products/{id}", ProductDto.class,productId).getBody();
+        Product product = getProduct(productDto);
+        return product;
+    }
+
+
     @Override
     public List<Product> getAllProducts() {
         RestTemplate restTemplate1 = restTemplate.build();
@@ -72,4 +70,16 @@ public class ProductService implements IProductService {
         return answer;
     }
 
+    private Product getProduct(ProductDto productDto) {
+        Product pro = new Product();
+        pro.setId(productDto.getId());
+        pro.setTitle((String) productDto.getTitle());
+        pro.setPrice((Double) productDto.getPrice());
+        Categories category = new Categories();
+        pro.setCategory(category);
+        pro.setImage( productDto.getImage());
+        pro.setDescription(productDto.getDescription());
+
+        return pro;
+    }
 }

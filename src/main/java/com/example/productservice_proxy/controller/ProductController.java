@@ -25,27 +25,29 @@ public class ProductController {
 
     }
 
-//    @GetMapping("/{id}")
-//    private ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long productId){
-//        try{
-//            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-//            headers.add("Content-Type", "application/json");
-//            headers.add("Accept", "application/json");
-//            headers.add("auth-token", "keyaccess");
-//        Product product = this.productService.getSingleProduct(productId);
-//        if (productId <1){
-//        throw new IllegalArgumentException("Invalid product id");}
-//        ResponseEntity responseEntity = new ResponseEntity<>(product,headers, HttpStatus.OK);
-//        return  responseEntity;
-//    }
-//        catch (Exception e){
-//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @GetMapping("/{id}")
+    private ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long productId){
+        try{
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+            headers.add("Content-Type", "application/json");
+            headers.add("Accept", "application/json");
+            headers.add("auth-token", "keyaccess");
+        Product product = this.productService.getSingleProduct(productId);
+        if (productId <1){
+        throw new IllegalArgumentException("Invalid product id");}
+        ResponseEntity responseEntity = new ResponseEntity<>(product,headers, HttpStatus.OK);
+        return  responseEntity;
+    }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping()
-    public String addNewProduct(@RequestBody ProductDto productDto){
-        return "Add new product " + productDto;
+    public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto productDto){
+        Product product = this.productService.addNewProduct(productDto);
+        ResponseEntity<Product> responseEntity = new ResponseEntity<>(product, HttpStatus.OK);
+        return responseEntity;
     }
 
     @PatchMapping("/{productId}")
